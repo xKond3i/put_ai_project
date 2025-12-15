@@ -1,12 +1,14 @@
 import tkinter as tk
 from tkinter import ttk
+import ctypes
 
 class App(tk.Tk):
     def __init__(self) -> None:
         super().__init__()
         self.title("Wine Expert")
         self.geometry("600x400")
-        self.iconphoto(True, tk.PhotoImage(file="icon.png"))
+        ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID('tkinter.python.wine.expert.app')
+        self.iconbitmap("icon.ico")
 
         self.question_lbl = ttk.Label(self, text="1. Question Placeholder", wraplength=500, font=("Segoe UI", 16))
         self.question_lbl.pack(pady=24)
