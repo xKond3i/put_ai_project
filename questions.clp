@@ -14,6 +14,11 @@
     (assert (recovering-from-work unknown))
     (assert (who-cooks unknown))
     (assert (know-them unknown))
+    (assert (on-the-go unknown))
+    (assert (special-occasions unknown))
+    (assert (anniversary unknown))
+    (assert (birthday unknown))
+    (assert (new-years unknown))
 )
 
 ; Questions
@@ -114,4 +119,56 @@
     (recovering-from-work unknown)
     =>
     (assert (question "QUESTION|recovering-from-work|Recovering from work?|yes|Yes|no|No"))
+)
+
+(defrule ask-on-the-go
+    (whos-drinking myself) 
+    (you-at-home no)
+    ?q <- (on-the-go unknown)
+    =>
+    (assert (question "QUESTION|on-the-go|On the go?|dinner|Dinner|restaurant|Restaurant|camping|Camping|drinking_in_public|Driking in Public|special_occasions|Special Occasions"))
+    (retract ?q)
+)
+
+(defrule ask-special-occasions
+    (whos-drinking myself) 
+    (you-at-home no)
+    (on-the-go special_occasions)
+    ?q <- (special-occasions unknown)
+    =>
+    (assert (question "QUESTION|special-occasions|What's the Occasion?|anniversary|Anniversary|eloping|Eloping|birthday|Birthday|blind_date|Blind Date|new_years|New Years"))
+    (retract ?q)
+)
+
+(defrule ask-anniversary
+    (whos-drinking myself) 
+    (you-at-home no)
+    (on-the-go special_occasions)
+    (special-occasions anniversary)
+    ?q <- (anniversary unknown)
+    =>
+    (assert (question "QUESTION|anniversary|How old?|1st|1st|2+|2+"))
+    (retract ?q)
+)
+
+(defrule ask-birthday
+    (whos-drinking myself) 
+    (you-at-home no)
+    (on-the-go special_occasions)
+    (special-occasions birthday)
+    ?q <- (birthday unknown)
+    =>
+    (assert (question "QUESTION|birthday|What kind of Birthday is it?|young|Young|old|Old"))
+    (retract ?q)
+)
+
+(defrule ask-new-years
+    (whos-drinking myself) 
+    (you-at-home no)
+    (on-the-go special_occasions)
+    (special-occasions new_years)
+    ?q <- (new-years unknown)
+    =>
+    (assert (question "QUESTION|new-years|Spending New Year Alone?|alone|Yes|not_alone|No"))
+    (retract ?q)
 )

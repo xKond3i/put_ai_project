@@ -21,10 +21,28 @@
 )
 
 (defrule recommend-california-pinot-noir
-    (whos-drinking friend)
-    (or (and (gathering no) (wine-lover yes) (really-know-them yes))
-        (and (gathering yes) (what-gathering get_together) (know-them yes) (wine-lover-2 yes)))
-    (your-favorite yes)
+    (or (and 
+            (whos-drinking friend)
+            (or (and (gathering no) (wine-lover yes) (really-know-them yes))
+                (and (gathering yes) (what-gathering get_together) (know-them yes) (wine-lover-2 yes)))
+            (your-favorite yes)
+        )
+        (and
+            (whos-drinking myself) 
+            (you-at-home no)
+            (on-the-go special_occasions)
+            (or
+                (and
+                    (special-occasions anniversary)
+                    (anniversary 1st)
+                )
+                (and
+                    (special-occasions birthday)
+                    (birthday old)
+                )
+            )
+        )
+    )
     =>
     (assert (recommendation "RECOMMENDATION|California pinot noir."))
 )
@@ -78,4 +96,42 @@
     (know-them no)
     =>
     (assert (recommendation "RECOMMENDATION|Bring boring bottle."))
+)
+
+(defrule recommend-merlot
+    (whos-drinking myself) 
+    (you-at-home no)
+    (on-the-go special_occasions)
+    (special-occasions anniversary)
+    (anniversary 2+)
+    =>
+    (assert (recommendation "RECOMMENDATION|Merlot."))
+)
+
+(defrule recommend-riesling-or-chenin-blanc
+    (and
+        (whos-drinking myself) 
+        (you-at-home no)
+        (on-the-go special_occasions)
+        (or
+            (special-occasions eloping)
+            (and
+                (special-occasions birthday)
+                (birthday young)
+            )
+            (special-occasions blind_date)
+        )
+    )
+    =>
+    (assert (recommendation "RECOMMENDATION|Riesling or Chenin Blanc."))
+)
+
+(defrule recommend-spanish-cava
+    (whos-drinking myself) 
+    (you-at-home no)
+    (on-the-go special_occasions)
+    (special-occasions new-years)
+    (new-years alone)
+    =>
+    (assert (recommendation "RECOMMENDATION|Spanish Cava."))
 )
