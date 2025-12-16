@@ -6,11 +6,14 @@
     (assert (gathering unknown))
     (assert (what-gathering unknown))
     (assert (wine-lover unknown))
+    (assert (wine-lover-2 unknown))
     (assert (really-know-them unknown))
     (assert (your-favorite unknown))
     (assert (you-at-home unknown))
     (assert (you-alone unknown))
     (assert (recovering-from-work unknown))
+    (assert (who-cooks unknown))
+    (assert (know-them unknown))
 )
 
 ; First question
@@ -57,10 +60,9 @@
 )
 
 (defrule ask-your-favorite
-    (whos-drinking friend) 
-    (gathering no)
-    (wine-lover yes)
-    (really-know-them yes)
+    (whos-drinking friend)
+    (or (and (gathering no) (wine-lover yes) (really-know-them yes))
+        (and (gathering yes) (what-gathering get_together) (know-them yes) (wine-lover-2 yes)))
     (your-favorite unknown)
     =>
     (printout t "Question: Are they your favorite people in the world?" crlf)
@@ -78,6 +80,43 @@
     (printout t "Pick one: beach_bbq, art_opening, get_together, bachelor, dinner: ")
     (bind ?answer (read))
     (assert (what-gathering ?answer))
+)
+
+(defrule ask-who-cooks
+    (whos-drinking friend) 
+    (gathering yes)
+    (what-gathering dinner)
+    (who-cooks unknown)
+    =>
+    (printout t "Question: Who is cooking?" crlf)
+    (printout t "Type 'me' or 'them':")
+    (bind ?answer (read))
+    (assert (who-cooks ?answer))
+)
+
+(defrule ask-know-them
+    (whos-drinking friend) 
+    (gathering yes)
+    (what-gathering get_together)
+    (know-them unknown)
+    =>
+    (printout t "Question: Do you know them?" crlf)
+    (printout t "Type 'yes' or 'no':")
+    (bind ?answer (read))
+    (assert (know-them ?answer))
+)
+
+(defrule ask-wine-lover-2
+    (whos-drinking friend) 
+    (gathering yes)
+    (what-gathering get_together)
+    (know-them yes)
+    (wine-lover-2 unknown)
+    =>
+    (printout t "Question: are they wine lovers?" crlf)
+    (printout t "Type 'yes' or 'no':")
+    (bind ?answer (read))
+    (assert (wine-lover-2 ?answer))
 )
 
 ; ---- PERSONAL USE ----
@@ -119,11 +158,22 @@
 ; Recommendation: not a wine lover -> they don't deserve wine. 
 (defrule recommend-nothing
     (whos-drinking friend)
-    (gathering no)
-    (or (wine-lover no)                                   
-        (and (wine-lover yes) (really-know-them no))
-        (and (wine-lover yes) (really-know-them yes) (your-favorite no))
-    )
+    (or (and (gathering no)
+             (or (wine-lover no)                                   
+                 (and (wine-lover yes) (really-know-them no))
+                 (and (wine-lover yes) (really-know-them yes) (your-favorite no))))
+        (and (gathering yes) (what-gathering get_together) (know-them yes) (wine-lover-2 yes) (your-favorite no)))
+    =>
+    (printout t "========================" crlf)
+    (printout t "Recommendation: They don't deserve any wine." crlf)
+    (printout t "========================" crlf)
+)
+
+(defrule 2-recommend-nothing
+    (whos-drinking friend) 
+    (gathering yes)
+    (or (and (what-gathering dinner) (who-cooks me))
+        (and (what-gathering get_together) (know-them yes) (wine-lover-2 no)))
     =>
     (printout t "========================" crlf)
     (printout t "Recommendation: They don't deserve any wine." crlf)
@@ -133,9 +183,8 @@
 ; Recommendation: California pinot noir
 (defrule recommend-california-pinot-noir
     (whos-drinking friend)
-    (gathering no)
-    (wine-lover yes)
-    (really-know-them yes)
+    (or (and (gathering no) (wine-lover yes) (really-know-them yes))
+        (and (gathering yes) (what-gathering get_together) (know-them yes) (wine-lover-2 yes)))
     (your-favorite yes)
     =>
     (printout t "========================" crlf)
@@ -156,7 +205,7 @@
 )
 
 ; Recommendation: 2 buck chuck
-(defrule recommend-whisky-vodka
+(defrule recommend-buck-chuck
     (whos-drinking friend)
     (gathering yes)
     (what-gathering art_opening)
@@ -167,7 +216,7 @@
 )
 
 ; Recommendation: no glass on the beach
-(defrule recommend-whisky-vodka
+(defrule recommend-glass-on-beach
     (whos-drinking friend)
     (gathering yes)
     (what-gathering beach_bbq)
@@ -186,5 +235,29 @@
     =>
     (printout t "========================" crlf)
     (printout t "Recommendation: Sniff your glass of pinot noir" crlf)
+    (printout t "========================" crlf)
+)
+
+; Recommendation: red blend
+(defrule recommend-red-blend
+    (whos-drinking friend) 
+    (gathering yes)
+    (what-gathering dinner)
+    (who-cooks them)
+    =>
+    (printout t "========================" crlf)
+    (printout t "Recommendation: Buy the biggest red blend bottle." crlf)
+    (printout t "========================" crlf)
+)
+
+; Recommendation: boring bottle
+(defrule recommend-boring-bottle
+    (whos-drinking friend) 
+    (gathering yes)
+    (what-gathering get_together)
+    (know-them no)
+    =>
+    (printout t "========================" crlf)
+    (printout t "Recommendation: Bring boring bottle." crlf)
     (printout t "========================" crlf)
 )
