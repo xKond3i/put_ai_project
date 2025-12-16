@@ -1,5 +1,3 @@
-; ------------ RECOMMENDATIONS ------------
-
 (defrule recommend-nothing
     (whos-drinking friend)
     (or (and (gathering no)
@@ -96,6 +94,123 @@
     (know-them no)
     =>
     (assert (recommendation "RECOMMENDATION|Bring boring bottle."))
+)
+
+(defrule recommend-zinfandel
+    (whos-drinking myself) 
+    (you-at-home yes)
+    (you-alone yes)
+    (recovering-from-work no)
+    (getting-drunk yes)
+    =>
+    (assert (recommendation "RECOMMENDATION|Go for high octane: zinfandel or shiraz."))
+)
+
+(defrule recommend-sangiovese
+    (whos-drinking myself) 
+    (you-at-home yes)
+    (you-alone yes)
+    (recovering-from-work no)
+    (getting-drunk no)
+    (feeling-fancy yes)
+    =>
+    (assert (recommendation "RECOMMENDATION|Go for something exotic: sangiovese or grenache."))
+)
+
+(defrule recommend-argentinian-malbec
+    (whos-drinking myself) 
+    (you-at-home yes)
+    (you-alone yes)
+    (recovering-from-work no)
+    (getting-drunk no)
+    (feeling-fancy no)
+    (daily-drinking yes)
+    (kool-aid yes)
+    =>
+    (assert (recommendation "RECOMMENDATION|Fruit forward wine: argentinian malbec."))
+)
+
+(defrule recommend-chinon
+    (whos-drinking myself) 
+    (you-at-home yes)
+    (you-alone yes)
+    (recovering-from-work no)
+    (getting-drunk no)
+    (feeling-fancy no)
+    (daily-drinking yes)
+    (kool-aid no)
+    (eat-dirt yes)
+    =>
+    (assert (recommendation "RECOMMENDATION|Something earthy: chinon or bourgueil."))
+)
+
+(defrule recommend-buttery
+    (whos-drinking myself) 
+    (you-at-home yes)
+    (you-alone yes)
+    (recovering-from-work no)
+    (getting-drunk no)
+    (feeling-fancy no)
+    (daily-drinking yes)
+    (kool-aid no)
+    (eat-dirt no)
+    (spray-butter yes)
+    =>
+    (assert (recommendation "RECOMMENDATION|Please bring me my: buttery chardonnay."))
+)
+
+(defrule recommend-get-out
+    (whos-drinking myself) 
+    (you-at-home yes)
+    (you-alone yes)
+    (recovering-from-work no)
+    (getting-drunk no)
+    (feeling-fancy no)
+    (or (and (daily-drinking yes) (kool-aid no) (eat-dirt no) (spray-butter no))
+        (and (daily-drinking no) (new-old what)))
+    =>
+    (assert (recommendation "RECOMMENDATION|Thx for playing, now get out of my program!"))
+)
+
+(defrule recommend-bordeaux
+    (whos-drinking myself) 
+    (you-at-home yes)
+    (you-alone yes)
+    (recovering-from-work no)
+    (getting-drunk no)
+    (feeling-fancy no)
+    (daily-drinking no)
+    (new-old old)
+    =>
+    (assert (recommendation "RECOMMENDATION|Why buy anything but bordeaux or burgundy."))
+)
+
+(defrule recommend-california-cabernet
+    (whos-drinking myself) 
+    (you-at-home yes)
+    (you-alone yes)
+    (recovering-from-work no)
+    (getting-drunk no)
+    (feeling-fancy no)
+    (daily-drinking no)
+    (new-old new)
+    (into-cults no)
+    =>
+    (assert (recommendation "RECOMMENDATION|Drink a bottle of sun california cabernet"))
+)
+
+(defrule recommend-sine-qua
+    (whos-drinking myself) 
+    (you-at-home yes)
+    (you-alone yes)
+    (recovering-from-work no)
+    (getting-drunk no)
+    (feeling-fancy no)
+    (daily-drinking no)
+    (new-old new)
+    (into-cults yes)
+    =>
+    (assert (recommendation "RECOMMENDATION|Cult classic: sine qua non or cayuse"))
 )
 
 (defrule recommend-merlot

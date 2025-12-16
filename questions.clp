@@ -14,6 +14,14 @@
     (assert (recovering-from-work unknown))
     (assert (who-cooks unknown))
     (assert (know-them unknown))
+    (assert (getting-drunk unknown))
+    (assert (feeling-fancy unknown))
+    (assert (daily-drinking unknown))
+    (assert (kool-aid unknown))
+    (assert (eat-dirt unknown))
+    (assert (spray-butter unknown))
+    (assert (new-old unknown))
+    (assert (into-cults unknown))
     (assert (on-the-go unknown))
     (assert (special-occasions unknown))
     (assert (anniversary unknown))
@@ -171,4 +179,106 @@
     =>
     (assert (question "QUESTION|new-years|Spending New Year Alone?|alone|Yes|not_alone|No"))
     (retract ?q)
+)
+
+(defrule ask-getting-drunk
+    (whos-drinking myself) 
+    (you-at-home yes)
+    (you-alone yes)
+    (recovering-from-work no)
+    (getting-drunk unknown)
+    =>
+    (assert (question "QUESTION|getting-drunk|Getting drunk?|yes|Yes|no|No"))
+)
+
+(defrule ask-feeling-fancy
+    (whos-drinking myself) 
+    (you-at-home yes)
+    (you-alone yes)
+    (recovering-from-work no)
+    (getting-drunk no)
+    (feeling-fancy unknown)
+    =>
+    (assert (question "QUESTION|feeling-fancy|Feeling fancy?|yes|Yes|no|No"))
+)
+
+(defrule ask-daily-drinking
+    (whos-drinking myself) 
+    (you-at-home yes)
+    (you-alone yes)
+    (recovering-from-work no)
+    (getting-drunk no)
+    (feeling-fancy no)
+    (daily-drinking unknown)
+    =>
+    (assert (question "QUESTION|daily-drinking|Daily drinking wine?|yes|Yes|no|No"))
+)
+
+(defrule ask-kool-aid
+    (whos-drinking myself) 
+    (you-at-home yes)
+    (you-alone yes)
+    (recovering-from-work no)
+    (getting-drunk no)
+    (feeling-fancy no)
+    (daily-drinking yes)
+    (kool-aid unknown)
+    =>
+    (assert (question "QUESTION|kool-aid|Kool-aid man?|yes|Yes|no|No"))
+)
+
+(defrule ask-eat-dirt
+    (whos-drinking myself) 
+    (you-at-home yes)
+    (you-alone yes)
+    (recovering-from-work no)
+    (getting-drunk no)
+    (feeling-fancy no)
+    (daily-drinking yes)
+    (kool-aid no)
+    (eat-dirt unknown)
+    =>
+    (assert (question "QUESTION|eat-dirt|Eat dirt as a child?|yes|Yes|no|No"))
+)
+
+(defrule ask-spray-butter
+    (whos-drinking myself) 
+    (you-at-home yes)
+    (you-alone yes)
+    (recovering-from-work no)
+    (getting-drunk no)
+    (feeling-fancy no)
+    (daily-drinking yes)
+    (kool-aid no)
+    (eat-dirt no)
+    (spray-butter unknown)
+    =>
+    (assert (question "QUESTION|spray-butter|Spray butter in your mouth?|yes|Yes|no|No"))
+)
+
+(defrule ask-new-old
+    (whos-drinking myself) 
+    (you-at-home yes)
+    (you-alone yes)
+    (recovering-from-work no)
+    (getting-drunk no)
+    (feeling-fancy no)
+    (daily-drinking no)
+    (new-old unknown)
+    =>
+    (assert (question "QUESTION|new-old|New vs old world?|new|New|old|Old|what|What"))
+)
+
+(defrule ask-into-cults
+    (whos-drinking myself) 
+    (you-at-home yes)
+    (you-alone yes)
+    (recovering-from-work no)
+    (getting-drunk no)
+    (feeling-fancy no)
+    (daily-drinking no)
+    (new-old new)
+    (into-cults unknown)
+    =>
+    (assert (question "QUESTION|into-cults|Are you into cults?|yes|Yes|no|No"))
 )
