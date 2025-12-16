@@ -1,5 +1,5 @@
-; ------------------------------
-; --- baza wiedzy - baza win ---
-; ------------------------------
+; -------------------
+; --- baza wiedzy ---
+; -------------------
 
-; tutaj beda defrule klasyfikujace dane wyniki :)
+; tutaj bedzie obsluga pytan i logika
