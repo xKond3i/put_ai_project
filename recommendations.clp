@@ -107,48 +107,49 @@
 )
 
 (defrule recommend-sangiovese
-    (or
-        (and    
-            (whos-drinking myself) 
-            (you-at-home yes)
-            (you-alone yes)
-            (recovering-from-work no)
-            (getting-drunk no)
-            (feeling-fancy yes)
-        )
-        (and
-            (whos-drinking myself) 
-            (you-at-home no)
-            (on-the-go new_years)
-            (special-occasions new_years)
-            (new-years alone)
-        )
+(and
+  (whos-drinking myself)
+  (or
+    ;; HOME BRANCH
+    (and
+      (you-at-home yes)
+      (you-alone yes)
+      (recovering-from-work no)
+      (getting-drunk no)
+      (feeling-fancy yes)
     )
+
+    (and
+      (you-at-home no)
+      (on-the-go new_years)
+      (special-occasions new_years)
+      (new-years alone)
+    )
+
+    (and
+      (you-at-home no)
+      (on-the-go dinner)
+      (wine-main-course yes)
+    )
+  )
+)
     =>
     (assert (recommendation "RECOMMENDATION|Go for something exotic: sangiovese or grenache."))
 )
 
 (defrule recommend-argentinian-malbec
-    (whos-drinking myself) 
-    (you-at-home yes)
-    (you-alone yes)
-    (recovering-from-work no)
-    (getting-drunk no)
-    (feeling-fancy no)
-    (daily-drinking yes)
+    (whos-drinking myself)
+    (or (and (you-at-home yes) (you-alone yes) (recovering-from-work no) (getting-drunk no) (feeling-fancy no) (daily-drinking yes))
+        (and (you-at-home no) (on-the-go dinner) (wine-main-course no) (microwave-dinner no) (cook-with-wife no)))
     (kool-aid yes)
     =>
     (assert (recommendation "RECOMMENDATION|Fruit forward wine: argentinian malbec."))
 )
 
 (defrule recommend-chinon
-    (whos-drinking myself) 
-    (you-at-home yes)
-    (you-alone yes)
-    (recovering-from-work no)
-    (getting-drunk no)
-    (feeling-fancy no)
-    (daily-drinking yes)
+    (whos-drinking myself)
+    (or (and (you-at-home yes) (you-alone yes) (recovering-from-work no) (getting-drunk no) (feeling-fancy no) (daily-drinking yes))
+        (and (you-at-home no) (on-the-go dinner) (wine-main-course no) (microwave-dinner no) (cook-with-wife no)))
     (kool-aid no)
     (eat-dirt yes)
     =>
@@ -156,13 +157,9 @@
 )
 
 (defrule recommend-buttery
-    (whos-drinking myself) 
-    (you-at-home yes)
-    (you-alone yes)
-    (recovering-from-work no)
-    (getting-drunk no)
-    (feeling-fancy no)
-    (daily-drinking yes)
+    (whos-drinking myself)
+    (or (and (you-at-home yes) (you-alone yes) (recovering-from-work no) (getting-drunk no) (feeling-fancy no) (daily-drinking yes))
+        (and (you-at-home no) (on-the-go dinner) (wine-main-course no) (microwave-dinner no) (cook-with-wife no)))
     (kool-aid no)
     (eat-dirt no)
     (spray-butter yes)
@@ -171,13 +168,10 @@
 )
 
 (defrule recommend-get-out
-    (whos-drinking myself) 
-    (you-at-home yes)
-    (you-alone yes)
-    (recovering-from-work no)
-    (getting-drunk no)
-    (feeling-fancy no)
-    (or (and (daily-drinking yes) (kool-aid no) (eat-dirt no) (spray-butter no))
+    (whos-drinking myself)
+    (or (and (you-at-home yes) (you-alone yes) (recovering-from-work no) (getting-drunk no) (feeling-fancy no) (daily-drinking yes))
+        (and (you-at-home no) (on-the-go dinner) (wine-main-course no) (microwave-dinner no) (cook-with-wife no)))
+    (or (and (kool-aid no) (eat-dirt no) (spray-butter no))
         (and (daily-drinking no) (new-old what)))
     =>
     (assert (recommendation "RECOMMENDATION|Thx for playing, now get out of my program!"))
@@ -309,4 +303,25 @@
     (pronounceable-menu no)
     =>
     (assert (recommendation "RECOMMENDATION|Ask for: Cotes de Rhone."))
+)
+
+(defrule recommend-3liter-box
+    (whos-drinking myself) 
+    (you-at-home no)
+    (on-the-go dinner)
+    (wine-main-course no)
+    (microwave-dinner yes)
+    =>
+    (assert (recommendation "RECOMMENDATION|3 liter box wine."))
+)
+
+(defrule recommend-blanc
+    (whos-drinking myself) 
+    (you-at-home no)
+    (on-the-go dinner)
+    (wine-main-course no)
+    (microwave-dinner no)
+    (cook-with-wife yes)
+    =>
+    (assert (recommendation "RECOMMENDATION|Sauvignon blanc."))
 )

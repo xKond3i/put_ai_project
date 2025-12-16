@@ -27,6 +27,9 @@
     (assert (anniversary unknown))
     (assert (birthday unknown))
     (assert (new-years unknown))
+    (assert (wine-main-course unknown))
+    (assert (microwave-dinner unknown))
+    (assert (cook-with-wife unknown))
     (assert (restaurant unknown))
     (assert (menu-pronounceable unknown))
 )
@@ -140,6 +143,39 @@
     (retract ?q)
 )
 
+(defrule ask-wine-main-course
+    (whos-drinking myself) 
+    (you-at-home no)
+    (on-the-go dinner)
+    ?q <- (wine-main-course unknown)
+    =>
+    (assert (question "QUESTION|wine-main-course|Is wine the main course?|yes|Yes|no|No"))
+    (retract ?q)
+)
+
+(defrule ask-microwave-dinner
+    (whos-drinking myself) 
+    (you-at-home no)
+    (on-the-go dinner)
+    (wine-main-course no)
+    ?q <- (microwave-dinner unknown)
+    =>
+    (assert (question "QUESTION|microwave-dinner|Dinner from a microwave?|yes|Yes|no|No"))
+    (retract ?q)
+)
+
+(defrule ask-cook-with-wife
+    (whos-drinking myself) 
+    (you-at-home no)
+    (on-the-go dinner)
+    (wine-main-course no)
+    (microwave-dinner no)
+    ?q <- (cook-with-wife unknown)
+    =>
+    (assert (question "QUESTION|cook-with-wife|Cooking with your wife?|yes|Yes|no|No"))
+    (retract ?q)
+)
+
 (defrule ask-special-occasions
     (whos-drinking myself) 
     (you-at-home no)
@@ -238,26 +274,18 @@
 )
 
 (defrule ask-kool-aid
-    (whos-drinking myself) 
-    (you-at-home yes)
-    (you-alone yes)
-    (recovering-from-work no)
-    (getting-drunk no)
-    (feeling-fancy no)
-    (daily-drinking yes)
+    (whos-drinking myself)
+    (or (and (you-at-home yes) (you-alone yes) (recovering-from-work no) (getting-drunk no) (feeling-fancy no) (daily-drinking yes))
+        (and (you-at-home no) (on-the-go dinner) (wine-main-course no) (microwave-dinner no) (cook-with-wife no)))
     (kool-aid unknown)
     =>
     (assert (question "QUESTION|kool-aid|Kool-aid man?|yes|Yes|no|No"))
 )
 
 (defrule ask-eat-dirt
-    (whos-drinking myself) 
-    (you-at-home yes)
-    (you-alone yes)
-    (recovering-from-work no)
-    (getting-drunk no)
-    (feeling-fancy no)
-    (daily-drinking yes)
+    (whos-drinking myself)
+    (or (and (you-at-home yes) (you-alone yes) (recovering-from-work no) (getting-drunk no) (feeling-fancy no) (daily-drinking yes))
+        (and (you-at-home no) (on-the-go dinner) (wine-main-course no) (microwave-dinner no) (cook-with-wife no)))
     (kool-aid no)
     (eat-dirt unknown)
     =>
@@ -265,13 +293,9 @@
 )
 
 (defrule ask-spray-butter
-    (whos-drinking myself) 
-    (you-at-home yes)
-    (you-alone yes)
-    (recovering-from-work no)
-    (getting-drunk no)
-    (feeling-fancy no)
-    (daily-drinking yes)
+    (whos-drinking myself)
+    (or (and (you-at-home yes) (you-alone yes) (recovering-from-work no) (getting-drunk no) (feeling-fancy no) (daily-drinking yes))
+        (and (you-at-home no) (on-the-go dinner) (wine-main-course no) (microwave-dinner no) (cook-with-wife no)))
     (kool-aid no)
     (eat-dirt no)
     (spray-butter unknown)
