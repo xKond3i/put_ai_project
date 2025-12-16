@@ -27,6 +27,8 @@
     (assert (anniversary unknown))
     (assert (birthday unknown))
     (assert (new-years unknown))
+    (assert (restaurant unknown))
+    (assert (menu-pronounceable unknown))
 )
 
 ; Questions
@@ -173,11 +175,32 @@
 (defrule ask-new-years
     (whos-drinking myself) 
     (you-at-home no)
-    (on-the-go special_occasions)
+    (on-the-go new_years)
     (special-occasions new_years)
     ?q <- (new-years unknown)
     =>
     (assert (question "QUESTION|new-years|Spending New Year Alone?|alone|Yes|not_alone|No"))
+    (retract ?q)
+)
+
+(defrule ask-restaurant
+    (whos-drinking myself) 
+    (you-at-home no)
+    (on-the-go restaurant)
+    ?q <- (restaurant unknown)
+    =>
+    (assert (question "QUESTION|restaurant|Fancy One?|fancy|Yes|not_fancy|No"))
+    (retract ?q)
+)
+
+(defrule ask-menu-pronounceable
+    (whos-drinking myself) 
+    (you-at-home no)
+    (on-the-go restaurant)
+    (restaurant fancy)
+    ?q <- (menu-pronounceable unknown)
+    =>
+    (assert (question "QUESTION|menu-pronounceable|Can you pronounce the Manu?|yes|Yes|no|No"))
     (retract ?q)
 )
 
@@ -257,28 +280,57 @@
 )
 
 (defrule ask-new-old
-    (whos-drinking myself) 
-    (you-at-home yes)
-    (you-alone yes)
-    (recovering-from-work no)
-    (getting-drunk no)
-    (feeling-fancy no)
-    (daily-drinking no)
-    (new-old unknown)
+    (and
+        ?c <- (new-old unknown);
+        (or
+            (and
+                (whos-drinking myself) 
+                (you-at-home yes)
+                (you-alone yes)
+                (recovering-from-work no)
+                (getting-drunk no)
+                (feeling-fancy no)
+                (daily-drinking no)
+            )
+            (and
+                (whos-drinking myself) 
+                (you-at-home no)
+                (on-the-go restaurant)
+                (restaurant fancy)
+                (menu-pronounceable yes)
+            )
+        )
+    )
     =>
     (assert (question "QUESTION|new-old|New vs old world?|new|New|old|Old|what|What"))
+    (retract ?c)
 )
 
 (defrule ask-into-cults
-    (whos-drinking myself) 
-    (you-at-home yes)
-    (you-alone yes)
-    (recovering-from-work no)
-    (getting-drunk no)
-    (feeling-fancy no)
-    (daily-drinking no)
-    (new-old new)
-    (into-cults unknown)
+    (and
+        ?c <- (into-cults unknown)
+        (or    
+            (and
+                (whos-drinking myself) 
+                (you-at-home yes)
+                (you-alone yes)
+                (recovering-from-work no)
+                (getting-drunk no)
+                (feeling-fancy no)
+                (daily-drinking no)
+                (new-old new)
+            )
+            (and
+                (whos-drinking myself) 
+                (you-at-home no)
+                (on-the-go restaurant)
+                (restaurant fancy)
+                (menu-pronounceable yes)
+                (new-old new)
+            )
+        )
+    )
     =>
     (assert (question "QUESTION|into-cults|Are you into cults?|yes|Yes|no|No"))
+    (retract ?c)
 )

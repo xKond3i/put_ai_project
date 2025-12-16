@@ -156,7 +156,7 @@ class WineExpertGUI:
         for widget in self.options_frame.winfo_children():
             widget.destroy()
         
-        self.answer_var.set('')
+        self.answer_var.set(-1)
         
         # Parse: QUESTION|param|question_text|val1|text1|val2|text2|...
         parts = line.split('|')

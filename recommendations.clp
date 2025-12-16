@@ -107,12 +107,23 @@
 )
 
 (defrule recommend-sangiovese
-    (whos-drinking myself) 
-    (you-at-home yes)
-    (you-alone yes)
-    (recovering-from-work no)
-    (getting-drunk no)
-    (feeling-fancy yes)
+    (or
+        (and    
+            (whos-drinking myself) 
+            (you-at-home yes)
+            (you-alone yes)
+            (recovering-from-work no)
+            (getting-drunk no)
+            (feeling-fancy yes)
+        )
+        (and
+            (whos-drinking myself) 
+            (you-at-home no)
+            (on-the-go new_years)
+            (special-occasions new_years)
+            (new-years alone)
+        )
+    )
     =>
     (assert (recommendation "RECOMMENDATION|Go for something exotic: sangiovese or grenache."))
 )
@@ -186,29 +197,55 @@
 )
 
 (defrule recommend-california-cabernet
-    (whos-drinking myself) 
-    (you-at-home yes)
-    (you-alone yes)
-    (recovering-from-work no)
-    (getting-drunk no)
-    (feeling-fancy no)
-    (daily-drinking no)
-    (new-old new)
-    (into-cults no)
+    (and
+        (new-old new)
+        (into-cults no)
+        (or
+            (and
+                (whos-drinking myself) 
+                (you-at-home yes)
+                (you-alone yes)
+                (recovering-from-work no)
+                (getting-drunk no)
+                (feeling-fancy no)
+                (daily-drinking no)
+            )
+            (and
+                (whos-drinking myself) 
+                (you-at-home no)
+                (on-the-go restaurant)
+                (restaurant fancy)
+                (menu-pronounceable yes)
+            )
+        )
+    )
     =>
     (assert (recommendation "RECOMMENDATION|Drink a bottle of sun california cabernet"))
 )
 
 (defrule recommend-sine-qua
-    (whos-drinking myself) 
-    (you-at-home yes)
-    (you-alone yes)
-    (recovering-from-work no)
-    (getting-drunk no)
-    (feeling-fancy no)
-    (daily-drinking no)
-    (new-old new)
-    (into-cults yes)
+    (and
+        (new-old new)
+        (into-cults yes)
+        (or
+            (and
+                (whos-drinking myself) 
+                (you-at-home no)
+                (on-the-go restaurant)
+                (restaurant fancy)
+                (menu-pronounceable yes)
+            )    
+            (and    
+                (whos-drinking myself) 
+                (you-at-home yes)
+                (you-alone yes)
+                (recovering-from-work no)
+                (getting-drunk no)
+                (feeling-fancy no)
+                (daily-drinking no)
+            )
+        )
+    )
     =>
     (assert (recommendation "RECOMMENDATION|Cult classic: sine qua non or cayuse"))
 )
@@ -238,7 +275,7 @@
         )
     )
     =>
-    (assert (recommendation "RECOMMENDATION|Riesling or Chenin Blanc."))
+    (assert (recommendation "RECOMMENDATION|Something Sweet: Riesling or Chenin Blanc."))
 )
 
 (defrule recommend-spanish-cava
@@ -248,5 +285,28 @@
     (special-occasions new-years)
     (new-years alone)
     =>
-    (assert (recommendation "RECOMMENDATION|Spanish Cava."))
+    (assert (recommendation "RECOMMENDATION|Cheap Bubbly: Spanish Cava."))
+)
+
+(defrule recommend-single_serve_box_wine
+    (and
+        (whos-drinking myself) 
+        (you-at-home no)
+        (or
+            (on-the-go camping)
+            (on-the-go drinking_in_public)
+        )
+    )
+    =>
+    (assert (recommendation "RECOMMENDATION|No Cork Screw Red: Single Serve Box Wine."))
+)
+
+(defrule recommend-cotes_du_rhone
+    (whos-drinking myself) 
+    (you-at-home no)
+    (on-the-go restaurant)
+    (restaurant not_fancy)
+    (pronounceable-menu no)
+    =>
+    (assert (recommendation "RECOMMENDATION|Ask for: Cotes de Rhone."))
 )
